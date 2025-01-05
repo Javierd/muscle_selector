@@ -101,7 +101,7 @@ class MusclePickerMapState extends State<MusclePickerMap> {
         isComplex: true,
         foregroundPainter: MusclePainter(
           muscle: muscle,
-          selectedMuscles: selectedMuscles,
+          selected: selectedMuscles.any((selected) => selected.id == muscle.id),
           dotColor: widget.dotColor,
           selectedColor: widget.selectedColor,
           strokeColor: widget.strokeColor,

@@ -19,7 +19,9 @@ class Parser {
 
   static const muscleGroups = {
     'chest': ['chest1', 'chest2'],
-    'shoulders': ['shoulder1', 'shoulder2', 'shoulder3', 'shoulder4'],
+    'front_delts': ['shoulder1_2', 'shoulder2_2'],
+    'side_delts': ['shoulder1_1', 'shoulder2_1'],
+    'back_delts': ['shoulder3', 'shoulder4'],
     'obliques': ['obliques1', 'obliques2'],
     'abs': ['abs1', 'abs2', 'abs3', 'abs4', 'abs5', 'abs6', 'abs7', 'abs8'],
     'abductor': ['abductor1', 'abductor2'],
