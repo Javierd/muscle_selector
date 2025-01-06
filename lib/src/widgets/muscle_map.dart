@@ -9,7 +9,9 @@ class MuscleGroup {
   final String name;
   final Color? color;
 
-  MuscleGroup({required this.name, this.color}) : assert(Parser.muscleGroups.containsKey(name), 'Muscle group not found $name');
+  MuscleGroup({required this.name, this.color})
+      : assert(Parser.muscleGroups.containsKey(name),
+            'Muscle group not found $name');
 }
 
 class MuscleMap extends StatefulWidget {
@@ -20,15 +22,15 @@ class MuscleMap extends StatefulWidget {
   final Color? selectedColor;
   final Set<MuscleGroup>? muscles;
 
-  const MuscleMap({
-    Key? key,
-    required this.onClicked,
-    this.width,
-    this.height,
-    this.strokeColor,
-    this.selectedColor,
-    this.muscles
-  }) : super(key: key);
+  const MuscleMap(
+      {Key? key,
+      required this.onClicked,
+      this.width,
+      this.height,
+      this.strokeColor,
+      this.selectedColor,
+      this.muscles})
+      : super(key: key);
 
   @override
   MuscleMapState createState() => MuscleMapState();
@@ -77,7 +79,8 @@ class MuscleMapState extends State<MuscleMap> {
 
     if (groupName == null) return null;
 
-    MuscleGroup? ret = widget.muscles?.firstWhereOrNull((m) => m.name == groupName);
+    MuscleGroup? ret =
+        widget.muscles?.firstWhereOrNull((m) => m.name == groupName);
     if (ret == null) {
       if (groupName != null) {
         ret = MuscleGroup(name: groupName);
@@ -87,21 +90,22 @@ class MuscleMapState extends State<MuscleMap> {
   }
 
   Widget _buildStackItem(Muscle muscle) {
-
     final bool isSelectable = muscle.id != 'human_body';
     MuscleGroup? group = _getMuscleGroup(muscle);
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
-      onTap: group == null ? null : () => {
-        if (isSelectable) {
-          widget.onClicked(group)
-        }
-      },
+      onTap: group == null
+          ? null
+          : () => {
+                if (isSelectable) {widget.onClicked(group)}
+              },
       child: CustomPaint(
         isComplex: true,
         foregroundPainter: MusclePainter(
           muscle: muscle,
-          selected: widget.muscles == null ? false : widget.muscles!.any((m) => m.name == group?.name),
+          selected: widget.muscles == null
+              ? false
+              : widget.muscles!.any((m) => m.name == group?.name),
           selectedColor: group?.color ?? widget.selectedColor,
           strokeColor: widget.strokeColor,
         ),

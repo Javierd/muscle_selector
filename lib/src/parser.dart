@@ -39,12 +39,18 @@ class Parser {
     'neck': ['neck']
   };
 
+  static Map<String, List<Muscle>> _mapCache = {};
+
   Set<Muscle> getMusclesByGroups(List<String> groupKeys, List<Muscle> muscleList) {
     final groupIds = groupKeys.expand((groupKey) => muscleGroups[groupKey] ?? []).toSet();
     return muscleList.where((muscle) => groupIds.contains(muscle.id)).toSet();
   }
 
   Future<List<Muscle>> svgToMuscleList(String body) async {
+    if (_mapCache.containsKey(body)) {
+      return _mapCache[body]!;
+    }
+
     final svgMuscle = await rootBundle.loadString('${Constants.ASSETS_PATH}/$body');
     List<Muscle> muscleList = [];
 
@@ -72,6 +78,7 @@ class Parser {
       }
     });
 
+    _mapCache[body] = muscleList;
     return muscleList;
   }
 
