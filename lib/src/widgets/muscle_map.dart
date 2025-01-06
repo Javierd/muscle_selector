@@ -61,10 +61,20 @@ class MuscleMapState extends State<MuscleMap> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        for (var muscle in _muscleList) _buildStackItem(muscle),
-      ],
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        Size size = Size.zero;
+        if (mapSize != null) {
+          double aspectRatio = mapSize!.width/mapSize!.height;
+          size = Size(constraints.maxWidth, constraints.maxWidth/aspectRatio);
+        }
+
+        return Stack(
+          children: [
+            for (var muscle in _muscleList) _buildStackItem(muscle, size),
+          ],
+        );
+      },
     );
   }
 
@@ -89,9 +99,10 @@ class MuscleMapState extends State<MuscleMap> {
     return ret;
   }
 
-  Widget _buildStackItem(Muscle muscle) {
+  Widget _buildStackItem(Muscle muscle, Size size) {
     final bool isSelectable = muscle.id != 'human_body';
     MuscleGroup? group = _getMuscleGroup(muscle);
+
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
       onTap: group == null
@@ -113,8 +124,8 @@ class MuscleMapState extends State<MuscleMap> {
           width: widget.width ?? double.infinity,
           height: widget.height ?? double.infinity,
           constraints: BoxConstraints(
-            maxWidth: mapSize?.width ?? 0,
-            maxHeight: mapSize?.height ?? 0,
+            maxWidth: size.width,
+            maxHeight: size.height,
           ),
           alignment: Alignment.center,
         ),
