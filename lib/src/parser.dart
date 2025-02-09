@@ -31,7 +31,7 @@ class Parser {
     'calves': ['calves1', 'calves2', 'calves3', 'calves4'],
     'forearm': ['forearm1', 'forearm2', 'forearm3', 'forearm4'],
     'glutes': ['glutes1', 'glutes2'],
-    'harmstrings': ['harmstrings1', 'harmstrings2'],
+    'hamstrings': ['harmstrings1', 'harmstrings2'],
     'lats': ['lats1', 'lats2', 'lats3', 'lats4'],
     'quads': ['quads1', 'quads2', 'quads3', 'quads4'],
     'trapezius': [
@@ -88,6 +88,11 @@ class Parser {
       final id = muscleData.group(1)!;
       final title = muscleData.group(2)!;
       var path = parseSvgPath(muscleData.group(3)!);
+
+      if (muscleList.any((m) => m.id == id)) {
+        //print('WARNING. Repeated $id');
+        //return;
+      }
 
       // Apply viewBox transformation if present
       if (viewBoxMatch != null) {

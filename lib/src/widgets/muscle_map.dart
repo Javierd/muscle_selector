@@ -12,6 +12,11 @@ class MuscleGroup {
   MuscleGroup({required this.name, this.color})
       : assert(Parser.muscleGroups.containsKey(name),
             'Muscle group not found $name');
+
+  @override
+  String toString() {
+    return 'MucleGroup($name, $color)';
+  }
 }
 
 class MuscleMap extends StatefulWidget {
@@ -31,6 +36,10 @@ class MuscleMap extends StatefulWidget {
       this.selectedColor,
       this.muscles})
       : super(key: key);
+
+  static void preload() {
+    Parser.instance.svgToMuscleList(Maps.BODY);
+  }
 
   @override
   MuscleMapState createState() => MuscleMapState();
@@ -52,6 +61,9 @@ class MuscleMapState extends State<MuscleMap> {
 
   _loadMuscleList() async {
     final list = await Parser.instance.svgToMuscleList(Maps.BODY);
+    if (!mounted) {
+      return;
+    }
     _muscleList.clear();
     setState(() {
       _muscleList.addAll(list);
@@ -63,16 +75,19 @@ class MuscleMapState extends State<MuscleMap> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        Size size = Size.zero;
+        double aspectRatio = 315/262;
         if (mapSize != null) {
-          double aspectRatio = mapSize!.width/mapSize!.height;
-          size = Size(constraints.maxWidth, constraints.maxWidth/aspectRatio);
+          aspectRatio = mapSize!.width/mapSize!.height;
         }
-
-        return Stack(
-          children: [
-            for (var muscle in _muscleList) _buildStackItem(muscle, size),
-          ],
+        Size size = Size(constraints.maxWidth, constraints.maxWidth/aspectRatio);
+        return SizedBox(
+          width: size.width,
+          height: size.height,
+          child: Stack(
+            children: [
+              for (var muscle in _muscleList) _buildStackItem(muscle, size),
+            ],
+          )
         );
       },
     );
